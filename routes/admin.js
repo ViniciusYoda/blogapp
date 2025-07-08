@@ -4,14 +4,18 @@ import { Router } from 'express'
 const router = Router()
 
 router.get('/', (req, res) => {
-    res.send('Pagina principal')
+    res.render('admin/index')
 })
 
 router.get('/posts/', (req, res) => {
-    res.send('Post')
+    
 })
 
 router.get('/categorias', (req, res) => {
-    res.send('Categorias')
+    res.render('admin/categorias')
+})
+
+router.get('/categorias/add', (req, res) => {
+    res.render('admin/addcategorias')
 })
 export default router
