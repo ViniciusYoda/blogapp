@@ -2,8 +2,10 @@ import express from 'express'
 import { Router } from 'express'
 import mongoose from 'mongoose'
 import Categoria from '../models/Categoria.js'
+import Postagem from '../models/Postagem.js'
 
 const Categorias = mongoose.model("categorias")
+const Postagens = mongoose.model("postagens")
 
 const router = Router()
 
@@ -101,7 +103,14 @@ router.post('/categorias/deletar', (req, res) => {
 });
 
 router.get("/postagens", (req, res) => {
-    res.render("admin/postagens")
+
+    Postagem.find().populate("categoria").sort({data: "desc"}).then((postagem) => {
+
+        res.render("admin/postagens", {postagens: postagens})
+    }).catch((errr) => {
+        req.flash("error_msg", "Houve um erro para rederizar a postagem")
+        res.render("admin")
+    })
 })
 
 router.get("/postagens/add", (req, res) => {
@@ -111,5 +120,35 @@ router.get("/postagens/add", (req, res) => {
     }).catch((err) => {
         res.render("admin")
     })
+})
+
+router.post("/postagens/novo", (req, res) => {
+    let erros = []
+
+    if(req.body.categoria == "0") {
+        erros.pish({text: "Categoria inválida, registre um categ"})
+    }
+
+    if(erros.length > 0) {
+        res.render("admin/addpostagem", {erros: erros})
+    } else {
+        const novaPostagem = {
+            titulo: req.body.titulo,
+            descricao: req.body.descricao,
+            conteudo: req.body.conteudo,
+            categoria: req.body.categoria,
+            slug: req.body.slug
+        }
+
+        new Postagem(novaPostagem).save().then(() => {
+            req.flash("success_msg", "Postagem criado com sucesso")
+            res.redirect("/admin/postagens")
+        }).catch((err) => {
+            req.flash("error_msg", "Houve um erro ao cadastrar a postagem. Tente novamente")
+            res.redirect("/admin/postagens")
+        })
+    }
+
+
 })
 export default router
