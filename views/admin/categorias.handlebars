@@ -1,6 +1,6 @@
 <h2>Lista de categorias: </h2>
 <hr />
-<a href="/admin/categorias/add"><button class="btn btn-success">Nova categoria</button></a>
+<a href="/admin/categorias/add" class="btn btn-success mb-3">Nova categoria</a> {{!-- Added margin-bottom for better spacing --}}
 
 {{#each categorias}}
   <div class="card mt-3">
@@ -8,15 +8,21 @@
       <h4>{{nome}}</h4>
       <p>
         <small><strong>Slug:</strong> {{slug}}</small><br>
-        <small><strong>Data de criação:</strong> {{date}}</small>
+        {{!-- Using a Handlebars helper to format the date --}}
+        <small><strong>Data de criação:</strong> {{formatDate date "DD/MM/YYYY HH:mm"}}</small>
       </p>
-      <a href="/admin/categorias/edit/{{_id}}">
-        <button class="btn btn-success mt-4">Editar categoria</button>
+      <a href="/admin/categorias/edit/{{_id}}" class="btn btn-success mt-4">
+        Editar categoria
       </a>
 
-      <form action="/admin/categorias/deletar" method="POST">
+      {{!--
+        Consider adding a confirmation dialog (e.g., JavaScript confirm())
+        for deletion to prevent accidental deletes.
+        Example: onclick="return confirm('Tem certeza que deseja deletar esta categoria?');"
+      --}}
+      <form action="/admin/categorias/deletar" method="POST" style="display: inline;"> {{!-- Added inline style for better button alignment --}}
         <input type="hidden" name="id" value="{{_id}}">
-        <button type="submit" class="btn btn-danger mt-2">Deletar categoria</button>
+        <button type="submit" class="btn btn-danger mt-2" onclick="return confirm('Tem certeza que deseja deletar esta categoria? Isso também pode afetar postagens ligadas a ela.');">Deletar categoria</button>
       </form>
     </div>
   </div>

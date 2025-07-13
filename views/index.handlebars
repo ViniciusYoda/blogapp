@@ -1,0 +1,32 @@
+<div class="jumbotron">
+  <h1 class="display-4">Bem-vindo ao Blog do Node</h1>
+  {{!-- Consider replacing static English text with Portuguese or dynamic content --}}
+  <p class="lead">Este é um blog simples construído com Node.js, Express e Handlebars.</p>
+  <hr class="my-4">
+  <p>Explore nossas postagens recentes e aprenda mais sobre o desenvolvimento web com Node.js.</p>
+  <p class="lead">
+    {{!-- Changed href to a more relevant path, e.g., for user registration --}}
+    <a class="btn btn-primary btn-lg" href="/registro" role="button">Criar uma conta</a>
+  </p>
+</div>
+
+<hr>
+<h2>Postagens recentes: </h2>
+
+{{#each postagens}}
+<div class="card mt-4"> {{!-- Added mt-4 for consistent spacing between cards --}}
+    <div class="card-body">
+        <h3>{{titulo}}</h3>
+        {{!-- Corrected typo: 'descicao' to 'descricao' --}}
+        <p>{{descricao}}</p>
+        <a href="/postagens/{{slug}}" class="btn btn-success">Leia mais</a> {{!-- Moved button classes directly to <a> --}}
+        <hr>
+        <small>Categoria: {{categoria.nome}}</small>
+        {{!-- Use a Handlebars helper to format the date for better readability --}}
+        <small>Data de publicação: {{formatDate data "DD/MM/YYYY HH:mm"}}</small>
+    </div>
+</div>
+
+{{else}}
+    <h5 class="mt-4">Nenhuma Postagem encontrada.</h5> {{!-- Added mt-4 for spacing and slightly more descriptive message --}}
+{{/each}}

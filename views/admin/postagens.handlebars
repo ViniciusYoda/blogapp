@@ -1,18 +1,25 @@
 <h2>Lista de postagens: </h2>
 <hr>
-<a href="/admin/postagens/add"><button class="btn btn-success">Nova postagem</button></a>
+<a href="/admin/postagens/add" class="btn btn-success mb-3">Nova postagem</a>
 
 {{#each postagens}}
     <div class="card mt-4">
         <div class="card-body">
             <h4>{{titulo}}</h4>
             <p>Descrição: {{descricao}}</p>
-            <small>Data: {{data}}</small> <br>
+            {{!-- Using a Handlebars helper to format the date --}}
+            <small>Data: {{formatDate data "DD/MM/YYYY HH:mm"}}</small> <br>
             <small>Categoria: {{categoria.nome}}</small><br>
-            <a href="/admin/postagens/edit/{{_id}}"><button class="btn btn-success mt-3">Editar</button></a>
-            <a href="/admin/postagens/deletar/{{_id}}"><button class="btn btn-danger mt-3">Deletar</button></a>
+
+            <a href="/admin/postagens/edit/{{_id}}" class="btn btn-success mt-3">Editar</a>
+
+            {{!-- Changed delete to a POST form with confirmation --}}
+            <form action="/admin/postagens/deletar" method="POST" style="display: inline-block;">
+                <input type="hidden" name="id" value="{{_id}}">
+                <button type="submit" class="btn btn-danger mt-3" onclick="return confirm('Tem certeza que deseja deletar esta postagem?');">Deletar</button>
+            </form>
         </div>
     </div>
 {{else}}
-    <p>Nenhuma postagem registrada</p>
+    <p class="mt-3">Nenhuma postagem registrada</p>
 {{/each}}

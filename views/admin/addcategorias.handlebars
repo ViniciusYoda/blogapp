@@ -1,17 +1,24 @@
 {{#each erros}}
-    <div class="alert alert-danger">{{texto}}</div> 
+    <div class="alert alert-danger">{{texto}}</div>
 {{/each}}
 
 <h3>Nova Categoria: </h3>
 <div class="card">
     <div class="card-body">
         <form action="/admin/categorias/nova" method="POST">
-            <label for="nome">Nome: </label>
-            <input type="text" id="nome" name="nome" placeholder="Nome da categoria" class="form-control">
-            <label for="slug">Slug: </label>
-            <input type="text" id="slug" name="slug" placeholder="Slug da categoria" class="form-control">
+            <div class="form-group"> {{!-- Add form-group for better spacing/styling with Bootstrap --}}
+                <label for="nome">Nome: </label>
+                <input type="text" id="nome" name="nome" placeholder="Nome da categoria" class="form-control"
+                    value="{{nome}}"> {{!-- Added value attribute --}}
+            </div>
+            <div class="form-group"> {{!-- Add form-group for better spacing/styling with Bootstrap --}}
+                <label for="slug">Slug: </label>
+                <input type="text" id="slug" name="slug" placeholder="Slug da categoria" class="form-control"
+                    value="{{slug}}"> {{!-- Added value attribute --}}
+            </div>
             <br>
-            <button type="submit" class="btn btn-success">Criar cateoria</button>
+            <button type="submit" class="btn btn-success">Criar categoria</button> {{!-- Corrected typo "cateoria" to "categoria" --}}
+            <a href="/admin/categorias" class="btn btn-secondary">Cancelar</a> {{!-- Added a cancel button --}}
         </form>
     </div>
 </div>

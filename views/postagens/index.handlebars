@@ -1,0 +1,11 @@
+<div class="card">
+    <div class="card-body">
+        <h1>{{postagem.titulo}}</h1>
+        <hr>
+        {{!-- Using a Handlebars helper to format the date --}}
+        <small>Data de publicação: {{formatDate postagem.data "DD/MM/YYYY HH:mm"}}</small><br>
+        <hr>
+        {{!-- Use triple curly braces if your content might contain HTML (e.g., from a rich text editor) --}}
+        {{{postagem.conteudo}}}
+    </div>
+</div>

@@ -1,31 +1,61 @@
 {{#each erros}}
     <div class="alert alert-danger">{{texto}}</div>
-{{else}}
-
 {{/each}}
+
 <div class="card">
     <div class="card-body">
-        <h4>Nova Postagem</h4>
+        <h4>Editar Postagem</h4> {{!-- Changed "Nova Postagem" to "Editar Postagem" --}}
         <form action="/admin/postagens/edit" method="POST">
-        <input type="hidden" value="{{postagem._id}}" name="id">
-            <label for="titulo">Título: </label>
-            <input type="tex" name="titulo" class="form-control" value="{{postagem.tiulo}}" required>
-            <label for="slug">Slug: </label>
-            <input type="text" name="slug" class="form-control" value="{{postagem.slug}}" required>
-            <label for="descricao">Descrição: </label>
-            <input type="text" name="descricao" class="form-control" value="{{postagem.descricao}}" required>
-            <label for="conteudo">Conteúdo: </label>
-            <textarea name="conteudo" class="form-control" value="{{postagem.conteudo}}" required>{{postagem.conteudo}}</textarea>
-            <label for="categoria">Categoria: </label>
-            <select name="categoria" class="custom-select">
-                {{#each categorias}}
-                    <option value="{{_id}}">{{nome}}</option>
-                {{else}}
-                    <option value="0">Nenhuma categoria registrada</option>
-                {{/each}}
-            </select>
+            <input type="hidden" name="id" value="{{postagem._id}}"> {{!-- Correctly hidden ID --}}
+
+            <div class="form-group">
+                <label for="titulo">Título: </label>
+                {{!-- Corrected type from "tex" to "text" --}}
+                {{!-- Corrected value from "postagem.tiulo" to "postagem.titulo" --}}
+                {{!-- Smarter value persistence: use submitted value on error, else original --}}
+                <input type="text" id="titulo" name="titulo" class="form-control"
+                    value="{{#if erros}}{{titulo}}{{else}}{{postagem.titulo}}{{/if}}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="slug">Slug: </label>
+                {{!-- Smarter value persistence --}}
+                <input type="text" id="slug" name="slug" class="form-control"
+                    value="{{#if erros}}{{slug}}{{else}}{{postagem.slug}}{{/if}}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="descricao">Descrição: </label>
+                {{!-- Smarter value persistence --}}
+                <input type="text" id="descricao" name="descricao" class="form-control"
+                    value="{{#if erros}}{{descricao}}{{else}}{{postagem.descricao}}{{/if}}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="conteudo">Conteúdo: </label>
+                {{!-- Textarea value goes between tags. Smarter persistence --}}
+                <textarea id="conteudo" name="conteudo" class="form-control" required>{{#if erros}}{{conteudo}}{{else}}{{postagem.conteudo}}{{/if}}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="categoria">Categoria: </label>
+                <select id="categoria" name="categoria" class="custom-select" required>
+                    <option value="0">-- Selecione uma categoria --</option> {{!-- Added a default prompt option --}}
+                    {{#each categorias}}
+                        {{!-- Selects the correct category, whether on initial load or after error --}}
+                        <option value="{{_id}}"
+                            {{#ifeq (if erros ../categoria postagem.categoria) _id}}selected{{/ifeq}}>
+                            {{nome}}
+                        </option>
+                    {{else}}
+                        <option value="0" disabled>Nenhuma categoria registrada</option>
+                    {{/each}}
+                </select>
+            </div>
+
             <br>
-            <button class="btn btn-success mt-4" type="submit">Editar postagem</button>
+            <button class="btn btn-success mt-4" type="submit">Atualizar Postagem</button> {{!-- Changed button text --}}
+            <a href="/admin/postagens" class="btn btn-secondary mt-4">Cancelar</a> {{!-- Added a Cancel button --}}
         </form>
     </div>
 </div>

@@ -1,8 +1,6 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
-const Schema = mongoose.Schema
-
-const Postagem = new Schemaa({
+const PostagemSchema = new mongoose.Schema({
     titulo: {
         type: String,
         required: true
@@ -20,7 +18,7 @@ const Postagem = new Schemaa({
         required: true
     },
     categoria: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId, // Use mongoose.Schema.Types.ObjectId for clarity
         ref: "categorias",
         required: true
     },
@@ -28,6 +26,9 @@ const Postagem = new Schemaa({
         type: Date,
         default: Date.now()
     }
-})
+});
 
-mongoose.model("postagens", Postagem)
+// Export the Mongoose model directly
+const Postagem = mongoose.model("postagens", PostagemSchema);
+
+export default Postagem;

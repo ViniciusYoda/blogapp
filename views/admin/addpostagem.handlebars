@@ -1,30 +1,52 @@
 {{#each erros}}
     <div class="alert alert-danger">{{texto}}</div>
-{{else}}
+{{/each}} {{!-- The {{else}} block after #each erros is unnecessary if you only want to display errors when they exist --}}
 
-{{/each}}
 <div class="card">
     <div class="card-body">
         <h4>Nova Postagem</h4>
         <form action="/admin/postagens/nova" method="POST">
-            <label for="titulo">Título: </label>
-            <input type="tex" name="titulo" class="form-control" required>
-            <label for="slug">Slug: </label>
-            <input type="text" name="slug" class="form-control" required>
-            <label for="descricao">Descrição: </label>
-            <input type="text" name="descricao" class="form-control" required>
-            <label for="conteudo">Conteúdo: </label>
-            <textarea name="conteudo" class="form-control" required></textarea>
-            <label for="categoria">Categoria: </label>
-            <select name="categoria" class="custom-select">
-                {{#each categorias}}
-                    <option value="{{_id}}">{{nome}}</option>
-                {{else}}
-                    <option value="0">Nenhuma categoria registrada</option>
-                {{/each}}
-            </select>
+            <div class="form-group">
+                <label for="titulo">Título: </label>
+                {{!-- Corrected type from "tex" to "text" --}}
+                {{!-- Added 'value' attribute to persist input on error --}}
+                <input type="text" id="titulo" name="titulo" class="form-control" value="{{titulo}}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="slug">Slug: </label>
+                {{!-- Added 'value' attribute to persist input on error --}}
+                <input type="text" id="slug" name="slug" class="form-control" value="{{slug}}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="descricao">Descrição: </label>
+                {{!-- Added 'value' attribute to persist input on error --}}
+                <input type="text" id="descricao" name="descricao" class="form-control" value="{{descricao}}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="conteudo">Conteúdo: </label>
+                {{!-- Added content inside textarea to persist input on error --}}
+                <textarea id="conteudo" name="conteudo" class="form-control" required>{{conteudo}}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="categoria">Categoria: </label>
+                <select id="categoria" name="categoria" class="custom-select" required>
+                    <option value="0">-- Selecione uma categoria --</option> {{!-- Added a default prompt option --}}
+                    {{#each categorias}}
+                        {{!-- Added 'selected' attribute to re-select the chosen category on error --}}
+                        <option value="{{_id}}" {{#if (eq ../categoria _id)}}selected{{/if}}>{{nome}}</option>
+                    {{else}}
+                        <option value="0" disabled>Nenhuma categoria registrada</option>
+                    {{/each}}
+                </select>
+            </div>
+
             <br>
             <button class="btn btn-success mt-4" type="submit">Criar postagem</button>
+            <a href="/admin/postagens" class="btn btn-secondary mt-4">Cancelar</a> {{!-- Added a cancel button --}}
         </form>
     </div>
 </div>
