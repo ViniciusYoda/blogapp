@@ -1,0 +1,19 @@
+<h1>{categoria.nome}</h1>
+
+{{#each postagens}}
+<div class="card mt-4"> {{!-- Added mt-4 for consistent spacing between cards --}}
+    <div class="card-body">
+        <h3>{{titulo}}</h3>
+        {{!-- Corrected typo: 'descicao' to 'descricao' --}}
+        <p>{{descricao}}</p>
+        <a href="/postagens/{{slug}}" class="btn btn-success">Leia mais</a> {{!-- Moved button classes directly to <a> --}}
+        <hr>
+        <small>Categoria: {{categoria.nome}}</small>
+        {{!-- Use a Handlebars helper to format the date for better readability --}}
+        <small>Data de publicação: {{formatDate data "DD/MM/YYYY HH:mm"}}</small>
+    </div>
+</div>
+
+{{else}}
+    <h5 class="mt-4">Nenhuma Postagem encontrada.</h5> {{!-- Added mt-4 for spacing and slightly more descriptive message --}}
+{{/each}}

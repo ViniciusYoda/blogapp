@@ -13,6 +13,7 @@ import moment from 'moment'; // Import moment for date formatting
 import CategoriaModel from './models/Categoria.js'; // Renamed to avoid conflict with 'Categoria' in admin route
 import PostagemModel from './models/Postagem.js'; // Renamed to avoid conflict with 'Postagem' in admin route
 
+
 // Define __filename and __dirname for ES module scope
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -144,6 +145,37 @@ app.get('/categorias/:slug', (req, res) => {
         res.redirect('/');
     });
 });
+
+app.get('/categorias', (req, res) => {
+    CategoriaModel.find().then((categoria) => {
+        res, render("categorias/index", { categoria: categoria })
+    }).catch((err) => {
+        console.error("Error finding category by slug:", err);
+        req.flash("error_msg", "Houve um erro ao carregar a categoria.");
+        res.redirect('/');
+    });
+})
+
+app.get('/categorias/:slug', (req, res) => {
+    CategoriaModel.findOne({ slug: req.params.slug }).then((categoria) => {
+        if (categoria) {
+            PostagemModel.find({ categoria: categoria._id }).then((postagem) => {
+                res.render("categorias/postagem", { postagem: postagem })
+            }).catch((err) => {
+                console.error("Error finding category by slug:", err);
+                req.flash("error_msg", "Houve um erro ao carregar a categoria.");
+                res.redirect('/');
+            });
+        } else {
+            req.flash("error_msg", "Essa categoria não existe.");
+            res.redirect('/');
+        }
+    }).catch((err) => {
+        console.error("Error finding category by slug:", err);
+        req.flash("error_msg", "Houve um erro ao carregar a categoria.");
+        res.redirect('/');
+    });
+})
 
 
 // Admin Routes
