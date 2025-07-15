@@ -13,6 +13,7 @@ import moment from 'moment'; // Import moment for date formatting
 import CategoriaModel from './models/Categoria.js'; // Renamed to avoid conflict with 'Categoria' in admin route
 import PostagemModel from './models/Postagem.js'; // Renamed to avoid conflict with 'Postagem' in admin route
 
+import usuario from './routes/usuario.js'
 
 // Define __filename and __dirname for ES module scope
 const __filename = fileURLToPath(import.meta.url);
@@ -180,6 +181,7 @@ app.get('/categorias/:slug', (req, res) => {
 
 // Admin Routes
 app.use('/admin', admin);
+app.use('/usuario', usuario)
 
 const PORT = process.env.PORT || 8081; // Use process.env.PORT for deployment flexibility
 
