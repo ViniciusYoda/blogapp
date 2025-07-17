@@ -15,6 +15,9 @@ import PostagemModel from './models/Postagem.js'; // Renamed to avoid conflict w
 
 import usuario from './routes/usuario.js'
 
+import passport from 'pasport'
+import auth from '../config/auth.js'
+
 // Define __filename and __dirname for ES module scope
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,12 +30,17 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+
+app.use(passport.initalize())
+
+app.use(passport.session())
 app.use(flash());
 
 // Global variables for flash messages
 app.use((req, res, next) => {
     res.locals.success_msg = req.flash("success_msg");
     res.locals.error_msg = req.flash("error_msg");
+    res.locals.error = req.flash("error")
     next();
 });
 

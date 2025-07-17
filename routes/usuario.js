@@ -2,7 +2,7 @@ import Router from 'express'
 import mongoose from 'mongoose'
 import byscyptjs from 'bcryptjs'
 const router = Router()
-
+import passport from 'passport'
 
 
 import Usuario from '../models/Usuario'
@@ -75,6 +75,14 @@ router.post("/registro", (req, res) => {
 
 router.get("/login", (req, res) => {
     res.render("usuarios/login")
+})
+
+router.post("/login", (req. res, next) => {
+    passport.authenticate("local", {
+        successRedirect: "/",
+        failureRedirect: "/usuarios/login",
+        failureFlash: true
+    })(req, res, next)
 })
 
 export default router
