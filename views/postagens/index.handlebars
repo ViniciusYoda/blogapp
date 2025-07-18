@@ -1,11 +1,13 @@
-<div class="card">
+<div class="card mt-4"> {{!-- Added margin-top for consistent spacing --}}
     <div class="card-body">
-        <h1>{{postagem.titulo}}</h1>
-        <hr>
-        {{!-- Using a Handlebars helper to format the date --}}
-        <small>Data de publicação: {{formatDate postagem.data "DD/MM/YYYY HH:mm"}}</small><br>
-        <hr>
-        {{!-- Use triple curly braces if your content might contain HTML (e.g., from a rich text editor) --}}
-        {{{postagem.conteudo}}}
+        <h1 class="card-title mb-3">{{postagem.titulo}}</h1> {{!-- Added Bootstrap classes for title --}}
+        <hr class="my-3"> {{!-- Added margin for horizontal rule --}}
+        <p class="card-text text-muted mb-1"> {{!-- Added Bootstrap classes for muted text and spacing --}}
+            <small>Data de publicação: {{formatDate postagem.data "DD/MM/YYYY HH:mm"}}</small>
+        </p>
+        <hr class="my-3"> {{!-- Added margin for horizontal rule --}}
+        <div class="card-text post-content"> {{!-- Wrapper div for content, allowing custom styling --}}
+            {{{postagem.conteudo}}}
+        </div>
     </div>
 </div>

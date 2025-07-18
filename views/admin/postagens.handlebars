@@ -1,25 +1,27 @@
-<h2>Lista de postagens: </h2>
+<h2>Lista de postagens:</h2>
 <hr>
 <a href="/admin/postagens/add" class="btn btn-success mb-3">Nova postagem</a>
 
 {{#each postagens}}
     <div class="card mt-4">
         <div class="card-body">
-            <h4>{{titulo}}</h4>
-            <p>Descrição: {{descricao}}</p>
-            {{!-- Using a Handlebars helper to format the date --}}
-            <small>Data: {{formatDate data "DD/MM/YYYY HH:mm"}}</small> <br>
-            <small>Categoria: {{categoria.nome}}</small><br>
+            <h4 class="card-title">{{titulo}}</h4> {{!-- Using card-title for semantic HTML and Bootstrap styling --}}
+            <p class="card-text">Descrição: {{descricao}}</p> {{!-- Using card-text --}}
+            <p class="card-text mb-1"> {{!-- Using card-text and mb-1 for spacing --}}
+                <small><strong>Data:</strong> {{formatDate data "DD/MM/YYYY HH:mm"}}</small>
+            </p>
+            <p class="card-text">
+                <small><strong>Categoria:</strong> {{categoria.nome}}</small>
+            </p>
 
-            <a href="/admin/postagens/edit/{{_id}}" class="btn btn-success mt-3">Editar</a>
+            <a href="/admin/postagens/edit/{{_id}}" class="btn btn-primary btn-sm mt-3">Editar</a> {{!-- Changed to btn-primary and btn-sm --}}
 
-            {{!-- Changed delete to a POST form with confirmation --}}
-            <form action="/admin/postagens/deletar" method="POST" style="display: inline-block;">
+            <form action="/admin/postagens/deletar" method="POST" class="d-inline-block ms-2"> {{!-- Using d-inline-block and ms-2 --}}
                 <input type="hidden" name="id" value="{{_id}}">
-                <button type="submit" class="btn btn-danger mt-3" onclick="return confirm('Tem certeza que deseja deletar esta postagem?');">Deletar</button>
+                <button type="submit" class="btn btn-danger btn-sm mt-3" onclick="return confirm('Tem certeza que deseja deletar esta postagem?');">Deletar</button> {{!-- Using btn-sm --}}
             </form>
         </div>
     </div>
 {{else}}
-    <p class="mt-3">Nenhuma postagem registrada</p>
+    <p class="mt-3 text-muted" role="alert">Nenhuma postagem registrada.</p> {{!-- Added text-muted and role="alert" --}}
 {{/each}}

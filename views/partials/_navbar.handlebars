@@ -1,27 +1,36 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark"> {{!-- Corrected 'navbar-fark' to 'navbar-dark' --}}
-  <a class="navbar-brand" href="/">Blog do Node</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid"> {{!-- Changed to container-fluid for full width, or keep container for fixed width --}}
+        <a class="navbar-brand" href="/">Blog do Node</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> {{!-- Updated data-toggle to data-bs-toggle and data-target to data-bs-target for Bootstrap 5 --}}
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/categorias">Categorias</a> {{!-- Added link to /categorias --}}
-      </li>
-      {{!-- Removed extraneous '</li>' --}}
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Login</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Registro</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/admin">Admin</a> {{!-- Added Admin link, assuming it exists --}}
-      </li>
-    </ul>
-  </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0"> {{!-- Changed mr-auto to me-auto for Bootstrap 5, added mb classes for responsive stacking --}}
+                <li class="nav-item"> {{!-- 'active' class is often handled via JS or specific helper logic for current page --}}
+                    <a class="nav-link active" aria-current="page" href="/">Home</a> {{!-- Added active and aria-current for current page --}}
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/categorias">Categorias</a>
+                </li>
+                {{#if user}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/usuarios/logout">Sair</a> {{!-- Removed 'disabled' unless truly meant to be disabled based on user state --}}
+                    </li>
+                    {{#if user.isAdmin}} {{!-- Assuming 'user' object has an 'isAdmin' property for admin users --}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">Admin</a>
+                    </li>
+                    {{/if}}
+                {{else}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/usuarios/login">Login</a> {{!-- Removed 'disabled' --}}
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/usuarios/registro">Registro</a> {{!-- Removed 'disabled' --}}
+                    </li>
+                {{/if}}
+            </ul>
+        </div>
+    </div>
 </nav>

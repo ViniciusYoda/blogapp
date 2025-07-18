@@ -1,48 +1,44 @@
+{{!-- Display validation errors if any --}}
 {{#each erros}}
-    <div class="alert alert-danger">{{texto}}</div>
+    <div class="alert alert-danger" role="alert">{{texto}}</div>
 {{/each}}
 
 <div class="card">
     <div class="card-body">
-        <h4>Editar Postagem</h4> {{!-- Changed "Nova Postagem" to "Editar Postagem" --}}
+        <h4>Editar Postagem</h4>
         <form action="/admin/postagens/edit" method="POST">
-            <input type="hidden" name="id" value="{{postagem._id}}"> {{!-- Correctly hidden ID --}}
+            <input type="hidden" name="id" value="{{postagem._id}}">
 
-            <div class="form-group">
-                <label for="titulo">Título: </label>
-                {{!-- Corrected type from "tex" to "text" --}}
-                {{!-- Corrected value from "postagem.tiulo" to "postagem.titulo" --}}
-                {{!-- Smarter value persistence: use submitted value on error, else original --}}
-                <input type="text" id="titulo" name="titulo" class="form-control"
+            <div class="form-group mb-3"> {{!-- Added mb-3 for spacing --}}
+                <label for="titulo">Título:</label>
+                <input type="text" id="titulo" name="titulo" class="form-control" placeholder="Título da postagem"
                     value="{{#if erros}}{{titulo}}{{else}}{{postagem.titulo}}{{/if}}" required>
             </div>
 
-            <div class="form-group">
-                <label for="slug">Slug: </label>
-                {{!-- Smarter value persistence --}}
-                <input type="text" id="slug" name="slug" class="form-control"
-                    value="{{#if erros}}{{slug}}{{else}}{{postagem.slug}}{{/if}}" required>
+            <div class="form-group mb-3"> {{!-- Added mb-3 for spacing --}}
+                <label for="slug">Slug:</label>
+                <input type="text" id="slug" name="slug" class="form-control" placeholder="slug-da-postagem"
+                    value="{{#if erros}}{{slug}}{{else}}{{postagem.slug}}{{/if}}" 
+                    required pattern="[a-z0-9\-]+" title="Apenas letras minúsculas, números e hífens.">
             </div>
 
-            <div class="form-group">
-                <label for="descricao">Descrição: </label>
-                {{!-- Smarter value persistence --}}
-                <input type="text" id="descricao" name="descricao" class="form-control"
+            <div class="form-group mb-3"> {{!-- Added mb-3 for spacing --}}
+                <label for="descricao">Descrição:</label>
+                <input type="text" id="descricao" name="descricao" class="form-control" placeholder="Breve descrição da postagem"
                     value="{{#if erros}}{{descricao}}{{else}}{{postagem.descricao}}{{/if}}" required>
             </div>
 
-            <div class="form-group">
-                <label for="conteudo">Conteúdo: </label>
-                {{!-- Textarea value goes between tags. Smarter persistence --}}
-                <textarea id="conteudo" name="conteudo" class="form-control" required>{{#if erros}}{{conteudo}}{{else}}{{postagem.conteudo}}{{/if}}</textarea>
+            <div class="form-group mb-3"> {{!-- Added mb-3 for spacing --}}
+                <label for="conteudo">Conteúdo:</label>
+                <textarea id="conteudo" name="conteudo" class="form-control" rows="5" placeholder="Escreva o conteúdo completo da postagem aqui..."
+                    required>{{#if erros}}{{conteudo}}{{else}}{{postagem.conteudo}}{{/if}}</textarea>
             </div>
 
-            <div class="form-group">
-                <label for="categoria">Categoria: </label>
-                <select id="categoria" name="categoria" class="custom-select" required>
-                    <option value="0">-- Selecione uma categoria --</option> {{!-- Added a default prompt option --}}
+            <div class="form-group mb-4"> {{!-- Added mb-4 for more spacing before buttons --}}
+                <label for="categoria">Categoria:</label>
+                <select id="categoria" name="categoria" class="form-select" required> {{!-- Changed to form-select for Bootstrap 5+ --}}
+                    <option value="0">-- Selecione uma categoria --</option>
                     {{#each categorias}}
-                        {{!-- Selects the correct category, whether on initial load or after error --}}
                         <option value="{{_id}}"
                             {{#ifeq (if erros ../categoria postagem.categoria) _id}}selected{{/ifeq}}>
                             {{nome}}
@@ -53,9 +49,8 @@
                 </select>
             </div>
 
-            <br>
-            <button class="btn btn-success mt-4" type="submit">Atualizar Postagem</button> {{!-- Changed button text --}}
-            <a href="/admin/postagens" class="btn btn-secondary mt-4">Cancelar</a> {{!-- Added a Cancel button --}}
+            <button class="btn btn-success" type="submit">Atualizar Postagem</button>
+            <a href="/admin/postagens" class="btn btn-secondary ms-2">Cancelar</a> {{!-- Added ms-2 for margin-left --}}
         </form>
     </div>
 </div>

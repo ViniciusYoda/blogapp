@@ -1,32 +1,29 @@
-<div class="jumbotron">
-  <h1 class="display-4">Bem-vindo ao Blog do Node</h1>
-  {{!-- Consider replacing static English text with Portuguese or dynamic content --}}
-  <p class="lead">Este é um blog simples construído com Node.js, Express e Handlebars.</p>
-  <hr class="my-4">
-  <p>Explore nossas postagens recentes e aprenda mais sobre o desenvolvimento web com Node.js.</p>
-  <p class="lead">
-    {{!-- Changed href to a more relevant path, e.g., for user registration --}}
-    <a class="btn btn-primary btn-lg" href="/registro" role="button">Criar uma conta</a>
-  </p>
+<div class="p-5 mb-4 bg-light rounded-3"> {{!-- Replaced jumbotron with Bootstrap 5 Jumbotron/Hero equivalent --}}
+  <div class="container-fluid py-5">
+    <h1 class="display-4 fw-bold">Bem-vindo ao Blog do Node</h1> {{!-- Added fw-bold for bolder text --}}
+    <p class="col-md-8 fs-4">Este é um blog simples construído com Node.js, Express e Handlebars.</p> {{!-- Added Bootstrap 5 text sizing and column width --}}
+    <hr class="my-4">
+    <p class="fs-5">Explore nossas postagens recentes e aprenda mais sobre o desenvolvimento web com Node.js.</p> {{!-- Added Bootstrap 5 text sizing --}}
+    <a class="btn btn-primary btn-lg mt-3" href="/usuarios/registro" role="button">Criar sua conta</a> {{!-- Updated href to /usuarios/registro and added mt-3 --}}
+  </div>
 </div>
 
-<hr>
-<h2>Postagens recentes: </h2>
+---
+
+<h2>Postagens recentes:</h2>
 
 {{#each postagens}}
-<div class="card mt-4"> {{!-- Added mt-4 for consistent spacing between cards --}}
+<div class="card mt-4">
     <div class="card-body">
-        <h3>{{titulo}}</h3>
-        {{!-- Corrected typo: 'descicao' to 'descricao' --}}
-        <p>{{descricao}}</p>
-        <a href="/postagens/{{slug}}" class="btn btn-success">Leia mais</a> {{!-- Moved button classes directly to <a> --}}
-        <hr>
-        <small>Categoria: {{categoria.nome}}</small>
-        {{!-- Use a Handlebars helper to format the date for better readability --}}
-        <small>Data de publicação: {{formatDate data "DD/MM/YYYY HH:mm"}}</small>
+        <h3 class="card-title">{{titulo}}</h3> {{!-- Using card-title for semantic HTML and Bootstrap styling --}}
+        <p class="card-text">{{descricao}}</p> {{!-- Using card-text --}}
+        <a href="/postagens/{{slug}}" class="btn btn-primary">Leia mais</a> {{!-- Changed to btn-primary for consistency --}}
+        <hr class="my-3"> {{!-- Added my-3 for vertical margin --}}
+        <small class="d-block mb-1">Categoria: {{categoria.nome}}</small> {{!-- d-block and mb-1 for layout and spacing --}}
+        <small class="d-block">Data de publicação: {{formatDate data "DD/MM/YYYY HH:mm"}}</small> {{!-- d-block for layout --}}
     </div>
 </div>
 
 {{else}}
-    <h5 class="mt-4">Nenhuma Postagem encontrada.</h5> {{!-- Added mt-4 for spacing and slightly more descriptive message --}}
+    <h5 class="mt-4 text-muted" role="alert">Nenhuma postagem encontrada.</h5> {{!-- Added text-muted and role="alert" --}}
 {{/each}}

@@ -1,31 +1,31 @@
-<h2>Lista de categorias: </h2>
+<h2>Lista de categorias:</h2>
 <hr />
-<a href="/admin/categorias/add" class="btn btn-success mb-3">Nova categoria</a> {{!-- Added margin-bottom for better spacing --}}
+<a href="/admin/categorias/add" class="btn btn-success mb-3">Nova categoria</a>
 
 {{#each categorias}}
-  <div class="card mt-3">
-    <div class="card-body">
-      <h4>{{nome}}</h4>
-      <p>
-        <small><strong>Slug:</strong> {{slug}}</small><br>
-        {{!-- Using a Handlebars helper to format the date --}}
-        <small><strong>Data de criação:</strong> {{formatDate date "DD/MM/YYYY HH:mm"}}</small>
-      </p>
-      <a href="/admin/categorias/edit/{{_id}}" class="btn btn-success mt-4">
-        Editar categoria
-      </a>
+    <div class="card mt-3">
+        <div class="card-body">
+            <h4 class="card-title">{{nome}}</h4> {{!-- Using card-title for semantic HTML and Bootstrap styling --}}
+            <p class="card-text mb-1"> {{!-- Using card-text and mb-1 for spacing --}}
+                <small><strong>Slug:</strong> {{slug}}</small>
+            </p>
+            <p class="card-text">
+                {{!-- Assuming formatDate is available as a Handlebars helper --}}
+                <small><strong>Data de criação:</strong> {{formatDate date "DD/MM/YYYY HH:mm"}}</small>
+            </p>
+            <a href="/admin/categorias/edit/{{_id}}" class="btn btn-primary btn-sm mt-3"> {{!-- Changed to btn-primary and btn-sm for consistency and size --}}
+                Editar categoria
+            </a>
 
-      {{!--
-        Consider adding a confirmation dialog (e.g., JavaScript confirm())
-        for deletion to prevent accidental deletes.
-        Example: onclick="return confirm('Tem certeza que deseja deletar esta categoria?');"
-      --}}
-      <form action="/admin/categorias/deletar" method="POST" style="display: inline;"> {{!-- Added inline style for better button alignment --}}
-        <input type="hidden" name="id" value="{{_id}}">
-        <button type="submit" class="btn btn-danger mt-2" onclick="return confirm('Tem certeza que deseja deletar esta categoria? Isso também pode afetar postagens ligadas a ela.');">Deletar categoria</button>
-      </form>
+            <form action="/admin/categorias/deletar" method="POST" class="d-inline-block ms-2"> {{!-- Changed to d-inline-block and added ms-2 --}}
+                <input type="hidden" name="id" value="{{_id}}">
+                <button type="submit" class="btn btn-danger btn-sm mt-3" 
+                        onclick="return confirm('Tem certeza que deseja deletar esta categoria? Esta ação é irreversível e pode afetar postagens ligadas a ela.');"> {{!-- Refined confirmation message and btn-sm --}}
+                    Deletar categoria
+                </button>
+            </form>
+        </div>
     </div>
-  </div>
 {{else}}
-  <h4 class="mt-3">Nenhuma categoria registrada</h4>
+    <h4 class="mt-3 text-muted" role="alert">Nenhuma categoria registrada.</h4> {{!-- Added text-muted and role="alert" --}}
 {{/each}}

@@ -1,24 +1,25 @@
+{{!-- Display validation errors if any --}}
 {{#each erros}}
-    <div class="alert alert-danger">{{texto}}</div>
+    <div class="alert alert-danger" role="alert">{{texto}}</div>
 {{/each}}
 
-<h3>Nova Categoria: </h3>
+<h3>Nova Categoria:</h3>
 <div class="card">
     <div class="card-body">
         <form action="/admin/categorias/nova" method="POST">
-            <div class="form-group"> {{!-- Add form-group for better spacing/styling with Bootstrap --}}
-                <label for="nome">Nome: </label>
+            <div class="form-group">
+                <label for="nome">Nome:</label>
                 <input type="text" id="nome" name="nome" placeholder="Nome da categoria" class="form-control"
-                    value="{{nome}}"> {{!-- Added value attribute --}}
+                    value="{{nome}}" required> {{!-- Added 'required' for basic client-side validation --}}
             </div>
-            <div class="form-group"> {{!-- Add form-group for better spacing/styling with Bootstrap --}}
-                <label for="slug">Slug: </label>
-                <input type="text" id="slug" name="slug" placeholder="Slug da categoria" class="form-control"
-                    value="{{slug}}"> {{!-- Added value attribute --}}
+            <div class="form-group mt-3"> {{!-- Added mt-3 for more consistent spacing in Bootstrap 5 --}}
+                <label for="slug">Slug:</label>
+                <input type="text" id="slug" name="slug" placeholder="slug-da-categoria" class="form-control"
+                    value="{{slug}}" required pattern="[a-z0-9\-]+" title="Apenas letras minúsculas, números e hífens."> {{!-- Added 'required' and a basic 'pattern' for slug format --}}
             </div>
             <br>
-            <button type="submit" class="btn btn-success">Criar categoria</button> {{!-- Corrected typo "cateoria" to "categoria" --}}
-            <a href="/admin/categorias" class="btn btn-secondary">Cancelar</a> {{!-- Added a cancel button --}}
+            <button type="submit" class="btn btn-success">Criar categoria</button>
+            <a href="/admin/categorias" class="btn btn-secondary ms-2">Cancelar</a> {{!-- Added ms-2 for margin-left --}}
         </form>
     </div>
 </div>

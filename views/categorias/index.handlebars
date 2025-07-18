@@ -1,7 +1,11 @@
-<h4>Categorias: </h4>
+<h4>Categorias:</h4>
 
 {{#each categorias}}
-    <a href="/categorias/{{slug}}"><h5>{{nome}}</h5></a>
+    <div class="mb-2"> {{!-- Added margin-bottom for spacing between category links --}}
+        <a href="/categorias/{{slug}}">
+            <h5 class="text-decoration-underline">{{nome}}</h5> {{!-- Added text-decoration-underline for clearer link indication --}}
+        </a>
+    </div>
 {{else}}
-
-{{/else}}
+    <p class="text-muted">Nenhuma categoria disponível no momento.</p> {{!-- Added a message when no categories exist --}}
+{{/each}}

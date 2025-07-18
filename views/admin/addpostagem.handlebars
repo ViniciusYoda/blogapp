@@ -1,52 +1,49 @@
+{{!-- Display validation errors if any --}}
 {{#each erros}}
-    <div class="alert alert-danger">{{texto}}</div>
-{{/each}} {{!-- The {{else}} block after #each erros is unnecessary if you only want to display errors when they exist --}}
+    <div class="alert alert-danger" role="alert">{{texto}}</div>
+{{/each}}
 
 <div class="card">
     <div class="card-body">
         <h4>Nova Postagem</h4>
         <form action="/admin/postagens/nova" method="POST">
-            <div class="form-group">
-                <label for="titulo">Título: </label>
-                {{!-- Corrected type from "tex" to "text" --}}
-                {{!-- Added 'value' attribute to persist input on error --}}
-                <input type="text" id="titulo" name="titulo" class="form-control" value="{{titulo}}" required>
+            <div class="form-group mb-3"> {{!-- Added mb-3 for spacing --}}
+                <label for="titulo">Título:</label>
+                <input type="text" id="titulo" name="titulo" class="form-control" placeholder="Título da postagem" value="{{titulo}}" required>
             </div>
 
-            <div class="form-group">
-                <label for="slug">Slug: </label>
-                {{!-- Added 'value' attribute to persist input on error --}}
-                <input type="text" id="slug" name="slug" class="form-control" value="{{slug}}" required>
+            <div class="form-group mb-3"> {{!-- Added mb-3 for spacing --}}
+                <label for="slug">Slug:</label>
+                <input type="text" id="slug" name="slug" class="form-control" placeholder="slug-da-postagem" value="{{slug}}" 
+                       required pattern="[a-z0-9\-]+" title="Apenas letras minúsculas, números e hífens.">
             </div>
 
-            <div class="form-group">
-                <label for="descricao">Descrição: </label>
-                {{!-- Added 'value' attribute to persist input on error --}}
-                <input type="text" id="descricao" name="descricao" class="form-control" value="{{descricao}}" required>
+            <div class="form-group mb-3"> {{!-- Added mb-3 for spacing --}}
+                <label for="descricao">Descrição:</label>
+                <input type="text" id="descricao" name="descricao" class="form-control" placeholder="Breve descrição da postagem" value="{{descricao}}" required>
             </div>
 
-            <div class="form-group">
-                <label for="conteudo">Conteúdo: </label>
-                {{!-- Added content inside textarea to persist input on error --}}
-                <textarea id="conteudo" name="conteudo" class="form-control" required>{{conteudo}}</textarea>
+            <div class="form-group mb-3"> {{!-- Added mb-3 for spacing --}}
+                <label for="conteudo">Conteúdo:</label>
+                <textarea id="conteudo" name="conteudo" class="form-control" rows="5" placeholder="Escreva o conteúdo completo da postagem aqui..." required>{{conteudo}}</textarea>
             </div>
 
-            <div class="form-group">
-                <label for="categoria">Categoria: </label>
-                <select id="categoria" name="categoria" class="custom-select" required>
-                    <option value="0">-- Selecione uma categoria --</option> {{!-- Added a default prompt option --}}
+            <div class="form-group mb-4"> {{!-- Added mb-4 for more spacing before buttons --}}
+                <label for="categoria">Categoria:</label>
+                {{!-- Changed custom-select to form-select for Bootstrap 5+ --}}
+                <select id="categoria" name="categoria" class="form-select" required>
+                    <option value="0">-- Selecione uma categoria --</option>
                     {{#each categorias}}
-                        {{!-- Added 'selected' attribute to re-select the chosen category on error --}}
-                        <option value="{{_id}}" {{#if (eq ../categoria _id)}}selected{{/if}}>{{nome}}</option>
+                        {{!-- Uses 'categoriaSelecionada' from controller for re-selection --}}
+                        <option value="{{_id}}" {{#if (eq ../categoriaSelecionada _id)}}selected{{/if}}>{{nome}}</option>
                     {{else}}
                         <option value="0" disabled>Nenhuma categoria registrada</option>
                     {{/each}}
                 </select>
             </div>
 
-            <br>
-            <button class="btn btn-success mt-4" type="submit">Criar postagem</button>
-            <a href="/admin/postagens" class="btn btn-secondary mt-4">Cancelar</a> {{!-- Added a cancel button --}}
+            <button class="btn btn-success" type="submit">Criar postagem</button>
+            <a href="/admin/postagens" class="btn btn-secondary ms-2">Cancelar</a> {{!-- Added ms-2 for margin-left --}}
         </form>
     </div>
 </div>

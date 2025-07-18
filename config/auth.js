@@ -1,9 +1,6 @@
 import localStrategy from 'passport-local'
-
 import mongoose from 'mongoose'
-
 import bcrypt from 'bcryptjs'
-
 import Usuario from '../models/Usuario'
 
 export default function(passport) {
@@ -17,20 +14,21 @@ export default function(passport) {
                 if(batem) {
                     return done(null, usuario)
                 } else {
-                    return (done(null, falsse, {message: "Senha incorreta"}))
+                    // Corrected: 'falsse' to 'false'
+                    return (done(null, false, {message: "Senha incorreta"}))
                 }
             })
         })
     }))
-
-    passport.serializerUser((user, done) => {
+    
+    passport.serializeUser((user, done) => {
         done(null, user.id)
     })
 
-    passport.deserializerUser((id, done) => {
+    passport.deserializeUser((id, done) => {
         Usuario.findById(id, (err, usuario) => {
-            done(err, user)
+            // Corrected: 'user' to 'usuario'
+            done(err, usuario) 
         })
     })
 }
-

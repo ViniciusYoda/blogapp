@@ -1,88 +1,122 @@
-import Router from 'express'
-import mongoose from 'mongoose'
-import byscyptjs from 'bcryptjs'
-const router = Router()
-import passport from 'passport'
+import { Router } from 'express'; // Import Router directly from express
+import bcrypt from 'bcryptjs'; // Corrected import name for bcryptjs
+import passport from 'passport';
 
+import Usuario from '../models/Usuario.js'; // Ensure correct path and .js extension if using ES modules
 
-import Usuario from '../models/Usuario'
+const router = Router();
 
+// --- Registration Routes ---
 router.get("/registro", (req, res) => {
-    res.render("usuarios/registro")
-})
+    res.render("usuarios/registro");
+});
 
 router.post("/registro", (req, res) => {
-    let erros = []
+    let erros = [];
 
-    if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null) {
-        erros.push({texto: "Nome inválido"})
+    // Basic validation for name
+    if (!req.body.nome || req.body.nome.trim() === '' || req.body.nome.length < 3) {
+        erros.push({ texto: "Nome inválido ou muito curto." });
     }
 
-    if(!req.body.email || typeof req.body.email == undefined || req.body.email == null) {
-        erros.push({texto: "email inválido"})
+    // Basic validation for email
+    if (!req.body.email || req.body.email.trim() === '' || !req.body.email.includes('@')) {
+        erros.push({ texto: "Email inválido." });
     }
 
-    if(!req.body.senha || typeof req.body.senha == undefined || req.body.senha == null) {
-        erros.push({texto: "senha inválido"})
+    // Basic validation for password
+    if (!req.body.senha || req.body.senha.trim() === '') {
+        erros.push({ texto: "Senha inválida." });
+    } else if (req.body.senha.length < 4) { // Minimum password length check
+        erros.push({ texto: "Senha muito curta. Mínimo de 4 caracteres." });
     }
 
-    if (req.bodyu.senh.length < 4) {
-        erros.push({texto: 'Senha muito curto'})
-    }
-
-    if (req.body.senha != req.body.senha2) {
-        erros.push({texto: 'As senhas não coecide '})
+    // Check if passwords match
+    if (req.body.senha !== req.body.senha2) { // Corrected typo 'req.bodyu.senh' and message
+        erros.push({ texto: 'As senhas não coincidem. Tente novamente.' });
     }
 
     if (erros.length > 0) {
-        res.render("usuarios/registro", {erros: erros})
+        // Re-render the registration form with errors and previous input
+        res.render("usuarios/registro", { 
+            erros: erros,
+            nome: req.body.nome,
+            email: req.body.email 
+        });
     } else {
-        Usuario.findOne({email: req.body.email}).then((usuario) => {
-            if(usuario) {
-                req.flash("error_msg", "Já existe uma conta com esse email")
-                res.redirect('/usuarios/registro')
-            } else {
-                const novoUsuario = new Usuario({
-                    nome: req.body.nome,
-                    email: req.body.email,
-                    senha: req.body.senha
-                })
+        // Check if a user with this email already exists
+        Usuario.findOne({ email: req.body.email.trim() })
+            .then((usuario) => {
+                if (usuario) {
+                    req.flash("error_msg", "Já existe uma conta com este email.");
+                    res.redirect('/usuarios/registro');
+                } else {
+                    const novoUsuario = new Usuario({
+                        nome: req.body.nome.trim(),
+                        email: req.body.email.trim(),
+                        // Password will be hashed below, no need to trim here
+                        senha: req.body.senha 
+                    });
 
-                bcrypt.genSalt(10, (erro, salt) => {
-                    bcrypt.hash(novoUsuario.senha, salt, (erro, hash) => {
-                        if(erro) {
-                            req.flash("error_msg", "Houve um erro ao salvar usuario")
-                            res.redirect("/")
-                        }
-                        novoUsuario.senha = hash
+                    // Hash the password
+                    bcrypt.genSalt(10, (err, salt) => {
+                        bcrypt.hash(novoUsuario.senha, salt, (err, hash) => {
+                            if (err) {
+                                console.error("Erro ao gerar hash da senha:", err);
+                                req.flash("error_msg", "Houve um erro ao processar seu registro.");
+                                return res.redirect("/");
+                            }
+                            novoUsuario.senha = hash;
 
-                        novoUsuario.save().then(() => {
-                            req.flash("success_msg", "Sucesso ao criar usuario")
-                            res.redirect("/")
-                        }).catch((err) => {
-                            req.flash("error_msg", "Houve um erro ao salvar o usuario")
-                            res.redirect("/usuarios/registro")
-                        })
-                    })
-                })
-            }
-        }).catch((err) => {
-            req.flash("error_msg", "Houve um erro interno")
-            res.redirect("/")
-        })
+                            // Save the new user to the database
+                            novoUsuario.save()
+                                .then(() => {
+                                    req.flash("success_msg", "Usuário registrado com sucesso!");
+                                    res.redirect("/");
+                                })
+                                .catch((err) => {
+                                    console.error("Erro ao salvar novo usuário:", err);
+                                    req.flash("error_msg", "Houve um erro ao salvar o usuário. Tente novamente.");
+                                    res.redirect("/usuarios/registro");
+                                });
+                        });
+                    });
+                }
+            })
+            .catch((err) => {
+                console.error("Erro ao buscar usuário por email:", err);
+                req.flash("error_msg", "Houve um erro interno ao verificar o email.");
+                res.redirect("/");
+            });
     }
-})
+});
 
+// --- Login Routes ---
 router.get("/login", (req, res) => {
-    res.render("usuarios/login")
-})
+    res.render("usuarios/login");
+});
 
-router.post("/login", (req. res, next) => {
+router.post("/login", (req, res, next) => { // Corrected typo 'req. res, next'
     passport.authenticate("local", {
         successRedirect: "/",
         failureRedirect: "/usuarios/login",
         failureFlash: true
-    })(req, res, next)
-})
+    })(req, res, next);
+});
 
-export default router
+// --- Logout Route ---
+router.get("/logout", (req, res, next) => {
+    // Passport.js logout method.
+    // In newer versions of Passport, req.logout() might require a callback
+    // or return a Promise. For simplicity and common usage:
+    req.logout((err) => {
+        if (err) { 
+            console.error("Erro ao fazer logout:", err);
+            return next(err); 
+        }
+        req.flash("success_msg", "Logout realizado com sucesso!");
+        res.redirect("/");
+    });
+});
+
+export default router;

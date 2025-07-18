@@ -1,5 +1,22 @@
 {
+  "name": "blogapp",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/ViniciusYoda/blogapp#readme",
+  "bugs": {
+    "url": "https://github.com/ViniciusYoda/blogapp/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ViniciusYoda/blogapp.git"
+  },
+  "license": "ISC",
+  "author": "",
   "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js"
+  },
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
@@ -13,7 +30,5 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0"
   },
-  "scripts": {
-    "dev": "nodemon app.js"
-  }
+  "devDependencies": {}
 }

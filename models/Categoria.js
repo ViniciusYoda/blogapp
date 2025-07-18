@@ -7,7 +7,9 @@ const CategoriaSchema = new mongoose.Schema({
     },
     slug: {
         type: String,
-        required: true
+        required: true,
+        unique: true, // Ensures slugs are unique
+        index: true   // Improves query performance on slug
     },
     date: {
         type: Date,
